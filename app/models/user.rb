@@ -6,11 +6,11 @@ class User < ActiveRecord::Base
 	validates :email, presence: true
 	validates :name, presence: true
 
-	has_and_belongs_to_many :subscribe_rules
+	has_and_belongs_to_many :subscriptions
 
   def subscribe? bangumi
-  	self.subscribe_rules.each do |subscribe_rule|
-  		return true if Regexp.new(subscribe_rule.name).match bangumi
+  	self.subscriptions.each do |subscription|
+  		return true if Regexp.new(subscription.rule).match bangumi
   	end
   	return false
   end

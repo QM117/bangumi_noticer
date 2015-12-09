@@ -1,2 +1,0 @@
-class SubscribeRulesControllerController < ApplicationController
-end
