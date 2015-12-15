@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Api::V1::SubscriptionsController < ApplicationController
+class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 	def create
 		render status: 400, json: {error: "Bad request! parameter 'name' or 'rule' is missing"} and return if params[:name].nil? || params[:rule].nil?
 		subscription = Subscription.new(

@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Api::V1::UsersController < ApplicationController
+class Api::V1::UsersController < Api::V1::BaseApiController
 	def show
 		render status: 400, json: {error: "Bad request! Some parameters is missing or invalid."} and return if params[:id].blank?
 		user = User.find_by_id(params[:id].to_i)
