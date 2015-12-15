@@ -2,6 +2,8 @@
 require 'open-uri'
 
 class Api::V1::NoticerController < Api::V1::BaseApiController
+  before_action :restrict_access
+
   URI = 'https://share.dmhy.org'
   LINE_EXPRESS = /<td class="title">[\s\S]*?<\/td>[\s\S]*?<td nowrap="nowrap" align="center">[\s\S]*?<\/td>/
   MAGNET_EXPRESS = /href="(magnet:.*?)"/
@@ -10,11 +12,6 @@ class Api::V1::NoticerController < Api::V1::BaseApiController
   def index
     if params[:name].nil? || params[:email].nil?
       render status: 400, json: {error: "Bad request! The params 'name' or 'email' is missing."} and return
-    end
-
-    @current_user = current_user
-    if @current_user.nil?
-      render status: 404, json: {error: "User not found! Please check your name and email"} and return
     end
 
     if File.exist?("#{Rails.root}/public/share.dmhy.org")
