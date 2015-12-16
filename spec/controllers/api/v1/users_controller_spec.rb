@@ -6,17 +6,17 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   end
 
   describe "show function" do
-    it "should return valid user data" do
-      get :show, {name: @user.name, email: @user.email, id: 1}
+    it "should return 200 and user data" do
+      get :show, {name: @user.name, email: @user.email, id: @user.id}
       expect(response.status).to be 200
       data = JSON.parse(response.body)
-      expect(data["data"]["id"]).to eq(@user.id)
-      expect(data["data"]["name"]).to eq(@user.name)
-      expect(data["data"]["email"]).to eq(@user.email)
+      expect(data["user"]["id"]).to eq(@user.id)
+      expect(data["user"]["name"]).to eq(@user.name)
+      expect(data["user"]["email"]).to eq(@user.email)
     end
 
     it "should return 401 unless user login" do
-      get :show, {name: @user.name, id: 1}
+      get :show, {name: @user.name, id: @user.id}
       expect(response.status).to be 401
     end
 
@@ -27,11 +27,27 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it "should return 404 with invalid id" do
-      get :show, {name: @user.name, email: @user.email, id: 4096}
+      get :show, {name: @user.name, email: @user.email, id: User.last.id * 3}
       expect(response.status).to be 404
     end
   end
 
   describe "create function" do
+    it "should create a user and return data with valid parameters" do
+      post :create, {name: "username", email: "user.email@test.com"}
+      expect(response.status).to be 201
+      data = JSON.parse(response.body)
+      user = User.find_by_id(data["user"]["id"])
+
+      expect(user).not_to be_nil
+      expect(user.name).to eq("username")
+      expect(user.email).to eq("user.email@test.com")
+    end
+
+    it "should return 400 when lacking parameters" do
+      post :create, {name: 'username'}
+      expect(response.status).to be 400
+    end
+
   end
 end

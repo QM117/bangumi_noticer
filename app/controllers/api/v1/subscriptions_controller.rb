@@ -10,9 +10,18 @@ class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 			rule: params[:rule]
 		)
 		if subscription.save
-			render status: 201, json: {message: "OK", data: subscription} and return
+			render status: 201, json: subscription and return
 		else
 			render status: 500, json: {error: "This is an error in saveing a subscribe rule"} and return
+		end
+	end
+
+	def show
+		subscription = Subscription.find_by_id(params[:id])
+		if subscription.nil?
+			render status: 404, json: {error: "Subscription not found!"} and return
+		else
+			render status: 200, json: subscription and return
 		end
 	end
 end
