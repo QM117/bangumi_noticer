@@ -5,9 +5,10 @@ class Api::V1::NoticerController < Api::V1::BaseApiController
   before_action :restrict_access
 
   URI = 'https://share.dmhy.org'
-  LINE_EXPRESS = /<td class="title">[\s\S]*?<\/td>[\s\S]*?<td nowrap="nowrap" align="center">[\s\S]*?<\/td>/
-  MAGNET_EXPRESS = /href="(magnet:.*?)"/
-  NAME_EXPRESS = /<td class="title">[\s\S]*?<a href=".*?"  target="_blank" >[\n\s]*(.*?)<\/a>[\s\S]*?<\/td>/
+  TIME = %q{<td.*>\s*.+<span.*>(.*)</span></td>\s+}
+  CLASSFICATION = %q{<td.*>\s+<a[^>]+>\s+(?:<b>)?<font.+>(\S+)</font>(?:</b>)?</a>\s+</td>\s+}
+  TITLE_WITH_TAG = %q{<td class="title">\s+(?:<span class="tag">\s+<a  href=[^_]+_id/(\d+).+\s+(\S+?)</a></span>)?\s+<a[^>]+>\s+(.+)</a>\s+.*?</td>\s+}
+  MAGNET_LINK_AND_SIZE = %q{<td nowrap="nowrap" align="center"><a class="download-arrow arrow-magnet" [^h]+href="(.*)">&nbsp;</a></td>\s+<td nowrap="nowrap" align="center">(\S+)<\/td>}
 
   def index
     if params[:name].nil? || params[:email].nil?
@@ -16,20 +17,10 @@ class Api::V1::NoticerController < Api::V1::BaseApiController
 
     if File.exist?("#{Rails.root}/public/share.dmhy.org")
       html_response = File.read("#{Rails.root}/public/share.dmhy.org")
-      bangumi_list = html_response.scan(LINE_EXPRESS)
-      magnet_links = {}
+      bangumi_list = html_response.scan(Regexp.new(TIME + CLASSFICATION + TITLE_WITH_TAG + MAGNET_LINK_AND_SIZE))
 
-      bangumi_list.each do |bangumi|
-        name = bangumi.match(NAME_EXPRESS)[1]
-        if @current_user.subscribe?(name)
-          magnet_links[name] = bangumi.match(MAGNET_EXPRESS)[1]
-        end
-      end
-
-      result = []
-      magnet_links.each do |title, magnet_link|
-        result << {title: title , magent_link: magnet_link}
-      end
+      # TODO: should save data in the database
+      result = bangumi_list.select{|bangumi| @current_user.subscribe?(bangumi[4])}.map{|bangumi| {title: bangumi[4], magnet_link: bangumi[5]}}
 
       render status: 200, json: result and return
     else
