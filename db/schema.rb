@@ -11,7 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151201164202) do
+ActiveRecord::Schema.define(version: 20160215021220) do
+
+  create_table "bangumis", force: :cascade do |t|
+    t.string   "title",         null: false
+    t.string   "classfication", null: false
+    t.string   "magnet_link"
+    t.datetime "upload_at"
+    t.string   "fansub"
+    t.string   "size"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bangumis", ["classfication", "title"], name: "index_bangumis_on_classfication_and_title", unique: true
+  add_index "bangumis", ["classfication"], name: "index_bangumis_on_classfication"
+  add_index "bangumis", ["title"], name: "index_bangumis_on_title"
 
   create_table "subscriptions", force: :cascade do |t|
     t.string   "name"
