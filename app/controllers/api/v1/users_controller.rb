@@ -16,6 +16,7 @@ class Api::V1::UsersController < Api::V1::BaseApiController
     user = User.new(
       name: params[:name],
       email: params[:email]
+      last_viewed_at: DateTime.now
     )
 
     if user.save

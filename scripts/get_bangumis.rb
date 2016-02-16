@@ -21,7 +21,13 @@ class GetBangumis
       if (Bangumi.find_by(title: bangumi[4], classfication: bangumi[1])).nil?
         new_bangumi = Bangumi.new(upload_at: bangumi[0], classfication: bangumi[1], fansub: bangumi[3], title: bangumi[4], magnet_link: bangumi[5], size: bangumi[6])
 
-        new_bangumi.save if new_bangumi.valid?
+        if new_bangumi.save
+          Subscription.all.each do |subscription|
+            subscription.bangumis << new_bangumi if subscription.match? new_bangumi
+          end
+        else
+          puts "Something wrong with saving new bangumi" # TODO: should write to log
+        end
       end
     end
 

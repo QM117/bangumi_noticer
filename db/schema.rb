@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160215021220) do
+ActiveRecord::Schema.define(version: 20160216054518) do
 
   create_table "bangumis", force: :cascade do |t|
     t.string   "title",         null: false
@@ -27,6 +27,11 @@ ActiveRecord::Schema.define(version: 20160215021220) do
   add_index "bangumis", ["classfication", "title"], name: "index_bangumis_on_classfication_and_title", unique: true
   add_index "bangumis", ["classfication"], name: "index_bangumis_on_classfication"
   add_index "bangumis", ["title"], name: "index_bangumis_on_title"
+
+  create_table "bangumis_subscriptions", force: :cascade do |t|
+    t.integer "subscription_id"
+    t.integer "bangumi_id"
+  end
 
   create_table "subscriptions", force: :cascade do |t|
     t.string   "name"
@@ -51,6 +56,7 @@ ActiveRecord::Schema.define(version: 20160215021220) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "last_viewed_at",  default: '2016-02-19 07:00:29'
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
