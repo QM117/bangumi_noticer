@@ -38,6 +38,9 @@ gem 'therubyracer'
 # Json serializer
 gem 'active_model_serializers'
 
+# scheduling pieces of jobs
+gem 'rufus-scheduler'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

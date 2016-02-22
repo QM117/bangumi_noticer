@@ -9,10 +9,13 @@ class GetBangumis
   MAGNET_LINK_AND_SIZE = %q{<td nowrap="nowrap" align="center"><a class="download-arrow arrow-magnet" [^h]+href="(.*)">&nbsp;</a></td>\s+<td nowrap="nowrap" align="center">(\S+)<\/td>}
 
   def self.start
+    puts "Loading updates..."
+    puts "================================"
+
     begin
       body = open(DMHY_URL).read
     rescue
-      puts "Bad network"  # TODO: should write to log
+      puts "Bad network" and return # TODO: should write to log
     end
 
     bangumi_list = body.scan(Regexp.new(TIME + CLASSFICATION + TITLE_WITH_TAG + MAGNET_LINK_AND_SIZE))
@@ -26,10 +29,12 @@ class GetBangumis
             subscription.bangumis << new_bangumi if subscription.match? new_bangumi
           end
         else
-          puts "Something wrong with saving new bangumi" # TODO: should write to log
+          puts "Something wrong with saving new bangumi" and return # TODO: should write to log
         end
       end
     end
 
+    puts "================================"
+    puts "Finish updating"
   end
 end
