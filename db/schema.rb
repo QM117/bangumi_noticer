@@ -56,7 +56,7 @@ ActiveRecord::Schema.define(version: 20160216054518) do
     t.string   "password_digest"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "last_viewed_at",  default: '2016-02-19 07:00:29'
+    t.datetime "last_viewed_at",  default: '2000-01-01 00:00:00'
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
