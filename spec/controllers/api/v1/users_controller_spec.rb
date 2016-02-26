@@ -48,6 +48,53 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       post :create, {name: 'username'}
       expect(response.status).to be 400
     end
+  end
 
+  describe "subscribe function" do
+    before do
+      @subscription = FactoryGirl.create(:subscription)
+    end
+
+    it "should return 400 without subscription id" do
+      post :subscribe, {name: @user.name, email: @user.email}
+      expect(response.status).to be 400
+    end
+
+    it "should return 400 without user infomation" do
+      post :subscribe, {name: @user.name, subscription_id: @subscription.id}
+      expect(response.status).to be 401
+    end
+
+    it "should return 200 with message 'ok' and associate current user and the subscription" do
+      post :subscribe, {name: @user.name, email: @user.email, subscription_id: @subscription.id}
+      expect(response.status).to be 200
+      expect(JSON.parse(response.body)["message"]).to eq("ok")
+      expect(@subscription.users.include? @user).to be true
+      expect(@user.subscriptions.include? @subscription).to be true
+    end
+  end
+
+  describe "subscribe function" do
+    before do
+      @subscription = FactoryGirl.create(:subscription)
+    end
+
+    it "should return 400 without subscription id" do
+      post :subscribe, {name: @user.name, email: @user.email}
+      expect(response.status).to be 400
+    end
+
+    it "should return 400 without user infomation" do
+      post :subscribe, {name: @user.name, subscription_id: @subscription.id}
+      expect(response.status).to be 401
+    end
+
+    it "should return 200 with message 'ok' and associate current user and the subscription" do
+      post :subscribe, {name: @user.name, email: @user.email, subscription_id: @subscription.id}
+      expect(response.status).to be 200
+      expect(JSON.parse(response.body)["message"]).to eq("ok")
+      expect(@subscription.users.include? @user).to be true
+      expect(@user.subscriptions.include? @subscription).to be true
+    end
   end
 end

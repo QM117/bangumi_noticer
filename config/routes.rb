@@ -58,6 +58,9 @@ Rails.application.routes.draw do
       get '/noticer' => 'noticer#index'
       resources :users, only: [:show, :create]
       resources :subscriptions, only: [:show, :create]
+
+      match '/users/subscribe', to: 'users#subscribe', via: 'post'
+      match '/users/unsubscribe', to: 'users#unsubscribe', via: 'post'
     end
   end
 end
