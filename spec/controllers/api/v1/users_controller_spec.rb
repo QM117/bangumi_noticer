@@ -65,7 +65,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       expect(response.status).to be 401
     end
 
-    it "should return 200 with message 'ok' and associate current user and the subscription" do
+    it "should return 200 with message 'ok' and associate the current user and the subscription" do
       post :subscribe, {name: @user.name, email: @user.email, subscription_id: @subscription.id}
       expect(response.status).to be 200
       expect(JSON.parse(response.body)["message"]).to eq("ok")
@@ -74,23 +74,25 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
   end
 
-  describe "subscribe function" do
+  describe "unsubscribe function" do
     before do
       @subscription = FactoryGirl.create(:subscription)
+      @user.subscriptions << @subscription
+      @user.save
     end
 
     it "should return 400 without subscription id" do
-      post :subscribe, {name: @user.name, email: @user.email}
+      post :unsubscribe, {name: @user.name, email: @user.email}
       expect(response.status).to be 400
     end
 
     it "should return 400 without user infomation" do
-      post :subscribe, {name: @user.name, subscription_id: @subscription.id}
+      post :unsubscribe, {name: @user.name, subscription_id: @subscription.id}
       expect(response.status).to be 401
     end
 
-    it "should return 200 with message 'ok' and associate current user and the subscription" do
-      post :subscribe, {name: @user.name, email: @user.email, subscription_id: @subscription.id}
+    it "should return 200 with message 'ok' and delete the association of current user and the subscription" do
+      post :unsubscribe, {name: @user.name, email: @user.email, subscription_id: @subscription.id}
       expect(response.status).to be 200
       expect(JSON.parse(response.body)["message"]).to eq("ok")
       expect(@subscription.users.include? @user).to be true
