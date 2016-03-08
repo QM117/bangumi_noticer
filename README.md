@@ -3,7 +3,7 @@ a website(?) to notice you when the bangumi updating on share.dmhy.org
 
 ----------------------------
 
-做这个东西最初的想法是写一个脚本，在[动漫花园](share.dmhy.org)中有我喜欢的动画更新的时候我可以立即收到通知。
+做这个东西最初的想法是写一个脚本，在[动漫花园](https://share.dmhy.org)中有我喜欢的动画更新的时候我可以立即收到通知。
 
 有这个想法之后跟小伙伴一说，有小伙伴表示 exciting， 让我顺便写个移动端 app 啦，于是干脆做个后端服务器提供 API.
 
