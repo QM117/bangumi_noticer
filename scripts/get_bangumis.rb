@@ -20,6 +20,7 @@ class GetBangumis
     bangumi_list = body.scan(Regexp.new(TIME + CLASSFICATION + TITLE_WITH_TAG + MAGNET_LINK_AND_SIZE))
 
     exist_bangumis = 0
+    new_bangumis = []
     bangumi_list.each do |bangumi|
       if Bangumi.exists?(title: bangumi[4], classfication: bangumi[1])
         exist_bangumis += 1
@@ -27,6 +28,16 @@ class GetBangumis
         exist_bangumis = 0
         new_bangumi = Bangumi.new(upload_at: bangumi[0], classfication: bangumi[1], fansub: bangumi[3], title: bangumi[4], magnet_link: bangumi[5], size: bangumi[6])
 
+        new_bangumis << new_bangumi
+      end
+
+      if exist_bangumis == 5
+        break
+      end
+    end
+
+    Bangumi.transaction do
+      new_bangumis.each do |new_bangumi|
         if new_bangumi.save
           Subscription.all.each do |subscription|
             subscription.bangumis << new_bangumi if subscription.match? new_bangumi
@@ -35,10 +46,7 @@ class GetBangumis
           Rails.logger.tagged("GET BANGUMIS") {Rails.logger.warn "Something wrong with saving a new bangumi"} and return
         end
       end
-      if exist_bangumis == 5
-        break
-      end
     end
-    Rails.logger.tagged("GET BANGUMIS") {Rails.logger.info "Success getting updates of bangumis"}
+    Rails.logger.tagged("GET BANGUMIS") {Rails.logger.info "Success getting updates of bangumis. #{new_bangumis.count} bangumis loaded."}
   end
 end
