@@ -21,13 +21,13 @@ class Api::V1::BaseApiController < ActionController::Base
 
   private
     def restrict_access_by_params
-      return true if !@api_key.nil?
+      return true if @api_key
       return false if params[:token].nil?
-      @api_key = ApiKey.find_by_token(params[:token])
+      @api_key = ApiKey.find_by(access_token: params[:token])
     end
 
     def restrict_access_by_header
-      authenticate_or_request_with_http_token do |token, options|
+      authenticate_with_http_token do |token, options|
         return false if token.nil?
         @api_key = ApiKey.find_by(access_token: token)
       end
