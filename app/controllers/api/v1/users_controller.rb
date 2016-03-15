@@ -35,7 +35,13 @@ class Api::V1::UsersController < Api::V1::BaseApiController
       render status: 400, json: {error: "Bad request! Some parameters is missing or invalid"} and return
     end
     subscription = Subscription.find_by_id(params[:subscription_id])
-    @current_user.subscriptions.append(subscription)
+    if subscription.nil?
+      render status: 404, json: {error: "Subscription not found by this id"} and return
+    end
+
+    if !@current_user.subscriptions.include?(subscription)
+      @current_user.subscriptions.append(subscription)
+    end
     render status: 200, json: {message: 'ok'}
   end
 
@@ -44,7 +50,13 @@ class Api::V1::UsersController < Api::V1::BaseApiController
       render status: 400, json: {error: "Bad request! Some parameters is missing or invalid"} and return
     end
     subscription = Subscription.find_by_id(params[:subscription_id])
-    @current_user.subscriptions.delete(subscription)
+    if subscription.nil?
+      render status: 404, json: {error: "Subscription not found by this id"} and return
+    end
+
+    if @current_user.subscriptions.include?(subscription)
+      @current_user.subscriptions.delete(subscription)
+    end
     render status: 200, json: {message: 'ok'}
   end
 end

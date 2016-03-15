@@ -65,14 +65,31 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     end
 
     it "should return 400 without subscription id" do
-      post :subscribe, {token: @user_token}
+      put :subscribe, {token: @user_token}
       expect(response.status).to be 400
     end
 
     it "should return 200 with message 'ok' and associate the current user and the subscription" do
-      post :subscribe, {token: @user_token, subscription_id: @subscription.id}
+      expect(@subscription.users.include? @user).to be false
+      expect(@user.subscriptions.include? @subscription).to be false
+      put :subscribe, {token: @user_token, subscription_id: @subscription.id}
       expect(response.status).to be 200
       expect(JSON.parse(response.body)["message"]).to eq("ok")
+      expect(@subscription.users.include? @user).to be true
+      expect(@user.subscriptions.include? @subscription).to be true
+    end
+
+    it "should return 404 with invalid subscription id" do
+      put :subscribe, {token: @user_token, subscription_id: Subscription.last.id * 3}
+      expect(response.status).to be 404
+    end
+
+    it "should return 200 with subscription the user subscribed already" do
+      @user.subscriptions << @subscription
+      expect(@subscription.users.include? @user).to be true
+      expect(@user.subscriptions.include? @subscription).to be true
+      put :subscribe, {token: @user_token, subscription_id: @subscription.id}
+      expect(response.status).to be 200
       expect(@subscription.users.include? @user).to be true
       expect(@user.subscriptions.include? @subscription).to be true
     end
@@ -82,18 +99,34 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     before do
       @subscription = FactoryGirl.create(:subscription)
       @user.subscriptions << @subscription
-      @user.save
     end
 
     it "should return 400 without subscription id" do
-      post :unsubscribe, {token: @user_token}
+      put :unsubscribe, {token: @user_token}
       expect(response.status).to be 400
     end
 
     it "should return 200 with message 'ok' and delete the association of current user and the subscription" do
-      post :unsubscribe, {token: @user_token, subscription_id: @subscription.id}
+      expect(@subscription.users.include? @user).to be true
+      expect(@user.subscriptions.include? @subscription).to be true
+      put :unsubscribe, {token: @user_token, subscription_id: @subscription.id}
       expect(response.status).to be 200
       expect(JSON.parse(response.body)["message"]).to eq("ok")
+      expect(@subscription.users.include? @user).to be false
+      expect(@user.subscriptions.include? @subscription).to be false
+    end
+
+    it "should return 404 with invalid subscription id" do
+      put :unsubscribe, {token: @user_token, subscription_id: Subscription.last.id * 3}
+      expect(response.status).to be 404
+    end
+
+    it "should return 200 with subscription the user unsubscribed already" do
+      @user.subscriptions.delete @subscription
+      expect(@subscription.users.include? @user).to be false
+      expect(@user.subscriptions.include? @subscription).to be false
+      put :unsubscribe, {token: @user_token, subscription_id: @subscription.id}
+      expect(response.status).to be 200
       expect(@subscription.users.include? @user).to be false
       expect(@user.subscriptions.include? @subscription).to be false
     end

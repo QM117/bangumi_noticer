@@ -59,8 +59,8 @@ Rails.application.routes.draw do
       resources :users, only: [:show, :create]
       resources :subscriptions, only: [:show, :create]
 
-      match '/users/subscribe', to: 'users#subscribe', via: 'post'
-      match '/users/unsubscribe', to: 'users#unsubscribe', via: 'post'
+      match '/users/subscribe', to: 'users#subscribe', via: 'put'
+      match '/users/unsubscribe', to: 'users#unsubscribe', via: 'put'
 
       match '/auth/token', to: 'authentication#token', via: 'get'
     end
