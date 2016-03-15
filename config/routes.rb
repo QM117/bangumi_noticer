@@ -61,6 +61,8 @@ Rails.application.routes.draw do
 
       match '/users/subscribe', to: 'users#subscribe', via: 'post'
       match '/users/unsubscribe', to: 'users#unsubscribe', via: 'post'
+
+      match '/auth/token', to: 'authentication#token', via: 'get'
     end
   end
 end

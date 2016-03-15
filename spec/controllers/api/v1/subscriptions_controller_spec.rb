@@ -3,11 +3,17 @@ require 'rails_helper'
 RSpec.describe Api::V1::SubscriptionsController, type: :controller do
   before do
     @user = FactoryGirl.create(:user)
+    @user_token = @user.api_key.access_token
   end
 
   describe "create function" do
-    it "should create a subscription and return data with valid parameters" do
+    it "should return 401 without user's token" do
       post :create, {name: "subscription name", rule: "subscription_rule"}
+      expect(response.status).to be 401
+    end
+
+    it "should create a subscription and return data with valid parameters" do
+      post :create, {token: @user_token, name: "subscription name", rule: "subscription_rule"}
       expect(response.status).to be 201
       data = JSON.parse(response.body)
       subscription = Subscription.find_by_id(data["subscription"]["id"])
@@ -18,7 +24,7 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
     end
 
     it "should return 400 without valid parameters" do
-      post :create, {name: "subscription name"}
+      post :create, {token: @user_token, name: "subscription name"}
       expect(response.status).to be 400
     end
   end
@@ -28,8 +34,13 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
       @subscription = FactoryGirl.create(:subscription)
     end
 
-    it "should return 200 with valid parameters" do
+    it "should return 401 without user's token" do
       get :show, {id: @subscription.id}
+      expect(response.status).to be 401
+    end
+
+    it "should return 200 with valid parameters" do
+      get :show, {token: @user_token, id: @subscription.id}
       expect(response.status).to be 200
       data = JSON.parse(response.body)
       expect(data["subscription"]["id"]).to eq @subscription.id
@@ -39,12 +50,12 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
 
     it "should not get anything without id" do
       expect {
-        get :show, {}
+        get :show, {token: @user_token}
       }.to raise_error(ActionController::UrlGenerationError)
     end
 
     it "should return 404 with invalid id" do
-      get :show, {id: Subscription.last.id * 3}
+      get :show, {token: @user_token, id: Subscription.last.id * 3}
       expect(response.status).to be 404
     end
   end

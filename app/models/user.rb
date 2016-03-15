@@ -1,12 +1,17 @@
 # encoding: utf-8
 
 class User < ActiveRecord::Base
-	include ActiveModel::Validations
+  include ActiveModel::Validations
 
-	validates :email, presence: true
-	validates :name, presence: true
+  after_create :create_api_key
 
+  validates :email, presence: true
+  validates :name, presence: true
+  validates :password, length: {minimum: 5}, confirmation: true, allow_blank: false
+
+  has_secure_password
 	has_and_belongs_to_many :subscriptions
+  has_one :api_key, dependent: :destroy
 
   def subscribe? bangumi
   	self.subscriptions.each do |subscription|
@@ -14,4 +19,9 @@ class User < ActiveRecord::Base
   	end
   	return false
   end
+
+  private
+    def create_api_key
+      ApiKey.create user: self
+    end
 end
