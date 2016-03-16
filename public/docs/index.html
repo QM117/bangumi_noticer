@@ -1,0 +1,659 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;ruby&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="ruby">ruby</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+
+<h3 id="api">API 文档</h3>
+
+<ul>
+<li><p>没有特别标出 HTTP Status Code 的就是 200</p></li>
+<li><p>如果在调用 API 时发现了文档中没有写出的错误，可能是因为触犯了某些广泛使用的机制比如身份验证不通过导致 401。由于重复次数过多所以没有在每个 API 中写明，请在左侧 Errors 一栏中寻找。</p></li>
+</ul>
+
+<h1 id="authentication">Authentication</h1>
+
+<h2 id="token">token</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/auth/token?</span><span class="se">\</span><span class="s2">
+email=maki@otanashisaka.com&amp;</span><span class="se">\</span><span class="s2">
+password=Nishikino"</span>
+</code></pre>
+
+<blockquote>
+<p>The response will be shown as this:</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="mi">4951769622</span><span class="n">a4a991bb2d515ed12cc9c0</span>
+</code></pre>
+
+<p>API 调用时的身份认证。
+最长 30 天过期一次。</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/auth/token</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>email</td>
+<td>required</td>
+<td>string</td>
+<td>user email</td>
+</tr>
+<tr>
+<td>password</td>
+<td>required</td>
+<td>string</td>
+<td>password</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Please provide your email and password to verify your identity</td>
+<td>缺少 email / password 其中一个</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized to access</td>
+<td>邮箱和密码不匹配</td>
+</tr>
+</tbody></table>
+
+          <h1 id="users">Users</h1>
+
+<h2 id="create">create</h2>
+<pre class="highlight shell"><code>curl -X POST <span class="s2">"http://localhost:3000/api/v1/users"</span><span class="se">\</span>
+-d <span class="nv">name</span><span class="o">=</span>kotori <span class="se">\</span>
+-d <span class="nv">email</span><span class="o">=</span>kotori@otonashisaka.com <span class="se">\</span>
+-d <span class="nv">password</span><span class="o">=</span>minami
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="no">HTTP</span> <span class="no">Status</span> <span class="no">Code</span><span class="p">:</span> <span class="mi">201</span>
+<span class="p">{</span>
+    <span class="s2">"user"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="ss">:"kotori"</span><span class="p">,</span>
+        <span class="s2">"email"</span><span class="ss">:"kotori@otonashisaka.com"</span><span class="p">,</span>
+        <span class="s2">"last_viewed_at"</span><span class="ss">:"2016-03-15T12:30:40.171Z"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>给出用户数据，创建新用户</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/users</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>required</td>
+<td>string</td>
+<td>user name</td>
+</tr>
+<tr>
+<td>email</td>
+<td>required</td>
+<td>string</td>
+<td>邮箱，用于登录和通知，唯一</td>
+</tr>
+<tr>
+<td>password</td>
+<td>required</td>
+<td>string</td>
+<td>password</td>
+</tr>
+<tr>
+<td>password_confirmation</td>
+<td>optional</td>
+<td>string</td>
+<td>确认密码，如果给出这个参数后台会验证与 password 是否相等。不给就以 password 为准。</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! Some parameters is missing or invalid.</td>
+<td>email / name / password 之一的参数缺少</td>
+</tr>
+<tr>
+<td>500</td>
+<td>There is an error in saving a user</td>
+<td>password_confirmation 不匹配，或者其他服务器内部错误。内部错误请联系管理员。</td>
+</tr>
+</tbody></table>
+
+<h2 id="show">show</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/users/1?</span><span class="se">\</span><span class="s2">
+token=6bb96bc489b9b11cdca1a3edba1f1944"</span>
+</code></pre>
+
+<blockquote>
+<p>The command above returns&hellip;</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"user"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="ss">:"maki"</span><span class="p">,</span>
+        <span class="s2">"email"</span><span class="ss">:"maki@otonashisaka.com"</span><span class="p">,</span>
+        <span class="s2">"last_viewed_at"</span><span class="ss">:"2000-01-01T00:00:00.000Z"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>以用户 id 获取用户相关的详细内容。需要 token.
+会检查权限，权限不符合会被拒绝。
+目前权限设定是只能查看自己的信息。</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/users/:id</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+<tr>
+<td>id (path)</td>
+<td>required</td>
+<td>integer</td>
+<td>user id</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! Some parameters is missing or invalid.</td>
+<td>参数 id 缺失</td>
+</tr>
+<tr>
+<td>404</td>
+<td>User not found by this id.</td>
+<td>找不到此 id 对应的 user</td>
+</tr>
+<tr>
+<td>401</td>
+<td>You are not authorized to access the resource</td>
+<td>当前用户 (token) 没有权限访问此 id 用户的信息</td>
+</tr>
+</tbody></table>
+
+<h2 id="subscribe">subscribe</h2>
+<pre class="highlight shell"><code>curl -X PUT <span class="s2">"http://localhost:3000/api/v1/users/subscribe"</span> <span class="se">\</span>
+-d <span class="nv">token</span><span class="o">=</span>18a9a20ba8ad67513bcec11a5d7d1639 <span class="se">\</span>
+-d <span class="nv">subscription_id</span><span class="o">=</span>1
+</code></pre>
+
+<blockquote>
+<p>And the response is&hellip;</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"message"</span><span class="ss">:"ok"</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>当前用户关联指定的订阅规则</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/users/subscribe</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+<tr>
+<td>subscripton_id</td>
+<td>required</td>
+<td>integer</td>
+<td>subscription id</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! Some parameters is missing or invalid</td>
+<td>参数 subscription_id 缺失</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Subscription not found by this id</td>
+<td>无此 id 对应的 subscription 资源</td>
+</tr>
+</tbody></table>
+
+<h2 id="unsubscribe">unsubscribe</h2>
+<pre class="highlight shell"><code>curl -X PUT <span class="s2">"http://localhost:3000/api/v1/users/unsubscribe"</span> <span class="se">\</span>
+-d <span class="nv">token</span><span class="o">=</span>18a9a20ba8ad67513bcec11a5d7d1639 <span class="se">\</span>
+-d <span class="nv">subscription_id</span><span class="o">=</span>1
+</code></pre>
+
+<blockquote>
+<p>Response&hellip;</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"message"</span><span class="ss">:"ok"</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>当前用户取消关联指定的订阅规则</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT /api/v1/users/unsubscribe</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+<tr>
+<td>subscripton_id</td>
+<td>required</td>
+<td>integer</td>
+<td>subscription id</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! Some parameters is missing or invalid</td>
+<td>参数 subscription_id 缺失</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Subscription not found by this id</td>
+<td>无此 id 对应的 subscription 资源</td>
+</tr>
+</tbody></table>
+
+          <h1 id="subscriptions">Subscriptions</h1>
+
+<h2 id="create">create</h2>
+<pre class="highlight shell"><code>curl -X POST <span class="s2">"http://localhost:3000/api/v1/subscriptions/"</span> <span class="se">\</span>
+-d <span class="nv">token</span><span class="o">=</span>8e7c69261918bf7d088b7023b59b57aa <span class="se">\</span>
+-d <span class="nv">name</span><span class="o">=</span><span class="s1">'One Punch Man'</span> <span class="se">\</span>
+-d <span class="nv">rule</span><span class="o">=</span><span class="s1">'punch'</span>
+</code></pre>
+
+<blockquote>
+<p>Response of the command above like this:</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="no">HTTP</span> <span class="no">Status</span> <span class="no">Code</span><span class="p">:</span> <span class="mi">201</span>
+<span class="p">{</span>
+    <span class="s2">"subscription"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="ss">:"One Punch Man"</span><span class="p">,</span>
+        <span class="s2">"rule"</span><span class="ss">:"punch"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>创建一个新的订阅规则 (subscription).
+需要登录，但不会自动关联到当前用户。</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST /api/v1/subscriptions/</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+<tr>
+<td>name</td>
+<td>required</td>
+<td>string</td>
+<td>subscription name</td>
+</tr>
+<tr>
+<td>rule</td>
+<td>required</td>
+<td>string</td>
+<td>用于匹配番组 (bangumi) 标题 (title) 的正则表达式。当然也可以直接当作搜索关键字来使用。</td>
+</tr>
+</tbody></table>
+
+<h3 id="errors">Errors</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! parameter &lsquo;name&rsquo; or &#39;rule&rsquo; is missing</td>
+<td>缺少 name / rule 其中之一</td>
+</tr>
+<tr>
+<td>500</td>
+<td>This is an error in saveing a subscribe rule</td>
+<td>服务器内部错误，发现请联系管理员</td>
+</tr>
+</tbody></table>
+
+<h2 id="show">show</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/subscriptions/1?</span><span class="se">\</span><span class="s2">
+token=d76ea6b03366edd884e6bca89f3689f2"</span>
+</code></pre>
+
+<blockquote>
+<p>And the response &hellip;.</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"subscription"</span><span class="p">:</span>
+    <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="ss">:"Luck and Logic"</span><span class="p">,</span>
+        <span class="s2">"rule"</span><span class="ss">:"Logic"</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>Show the details of a subscription</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/subscriptions/:id</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id (path)</td>
+<td>required</td>
+<td>integer</td>
+<td>subscription id</td>
+</tr>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+</tbody></table>
+
+<h3 id="error-code">Error Code</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>404</td>
+<td>Subscription not found!</td>
+<td>无此 id 对应的 subscription 资源</td>
+</tr>
+</tbody></table>
+
+          <h1 id="errors">Errors</h1>
+
+<h3 id="other-error-codes">Other error codes</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>401</td>
+<td>Access Denied</td>
+<td>未登录，即未给出 token</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="ruby">ruby</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
