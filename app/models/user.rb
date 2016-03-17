@@ -20,6 +20,10 @@ class User < ActiveRecord::Base
   	return false
   end
 
+  def refresh_access_token!
+    self.api_key = ApiKey.create
+  end
+
   private
     def create_api_key
       ApiKey.create user: self

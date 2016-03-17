@@ -39,8 +39,13 @@ password=Nishikino"
 4951769622a4a991bb2d515ed12cc9c0
 ```
 
-API 调用时的身份认证。
-最长 30 天过期一次。
+API 调用时的身份认证。  
+access token 最长 30 天过期。
+过期之后在 api 中使用 token 会触发 token 更新，
+同时返回 401, `Access token has expired.`  
+但是过期的 token 被废弃之后不会保存，所以同样的请求再发出去回复就变成了 `Access Denied.`  
+如果没有捕捉到那句 `Access token has expired.` 可以配合第一次获取 token 的时间判断是 token 过期还是别的情况。  
+如果需要验证 token 正确性的 api 比如 `GET /api/v1/auth/ping` 这样的请提 issue。
 
 ### HTTP Request
 

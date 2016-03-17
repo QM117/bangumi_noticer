@@ -139,8 +139,13 @@ password=Nishikino"</span>
 <pre class="highlight ruby"><code><span class="mi">4951769622</span><span class="n">a4a991bb2d515ed12cc9c0</span>
 </code></pre>
 
-<p>API 调用时的身份认证。
-最长 30 天过期一次。</p>
+<p>API 调用时的身份认证。<br>
+access token 最长 30 天过期。
+过期之后在 api 中使用 token 会触发 token 更新，
+同时返回 401, <code class="prettyprint">Access token has expired.</code><br>
+但是过期的 token 被废弃之后不会保存，所以同样的请求再发出去回复就变成了 <code class="prettyprint">Access Denied.</code><br>
+如果没有捕捉到那句 <code class="prettyprint">Access token has expired.</code> 可以配合第一次获取 token 的时间判断是 token 过期还是别的情况。<br>
+如果需要验证 token 正确性的 api 比如 <code class="prettyprint">GET /api/v1/auth/ping</code> 这样的请提 issue。</p>
 
 <h3 id="http-request">HTTP Request</h3>
 
@@ -645,6 +650,11 @@ token=d76ea6b03366edd884e6bca89f3689f2"</span>
 <td>401</td>
 <td>Access Denied</td>
 <td>未登录，即未给出 token</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Access token has expired</td>
+<td>token 过期，请重新登录</td>
 </tr>
 </tbody></table>
 
