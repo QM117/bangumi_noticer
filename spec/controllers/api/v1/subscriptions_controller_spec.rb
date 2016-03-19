@@ -59,4 +59,30 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
       expect(response.status).to be 404
     end
   end
+
+  describe "update function" do
+    before do
+      @subscription = FactoryGirl.create(:subscription)
+    end
+
+    it "should return 401 without access token" do
+      put :update, {id: @subscription.id, name: "subscription_new_name"}
+      expect(response.status).to be 401
+    end
+
+    it "should return 200 with valid parameters" do
+      put :update, {token: @user_token, id: @subscription.id, name: "subscription_new_name", rule: "subscription_new_rule"}
+      expect(response.status).to be 200
+      data = JSON.parse(response.body)
+      expect(data["message"]).to eq "ok"
+      @subscription.reload
+      expect(@subscription.name).to eq "subscription_new_name"
+      expect(@subscription.rule).to eq "subscription_new_rule"
+    end
+
+    it "should return 404 with invalid subscription id" do
+      put :update, {token: @user_token, id: Subscription.last.id * 3, name: "subscription_new_name"}
+      expect(response.status).to be 404
+    end
+  end
 end

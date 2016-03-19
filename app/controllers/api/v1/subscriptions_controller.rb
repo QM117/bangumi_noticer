@@ -24,4 +24,14 @@ class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 			render status: 200, json: subscription and return
 		end
 	end
+
+	def update
+		subscription = Subscription.find_by_id(params[:id])
+		if subscription.nil?
+			render status: 404, json: {error: "Subscription not found!"} and return
+		else
+			subscription.update(params.permit(:name, :rule))
+			render status: 200, json: {message: 'ok'}
+		end
+	end
 end

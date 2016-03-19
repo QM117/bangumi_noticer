@@ -85,3 +85,42 @@ token     | required    | string    | access token
 Error Code | Message | Meaning
 ---------- | ------- | -------
 404        | Subscription not found! | 无此 id 对应的 subscription 资源
+
+
+
+## update
+
+```bash
+curl -X PUT "http://localhost:3000/api/v1/subscriptions/1" \
+-d token=a58ab9e270467c511af98e68a6b19736 \
+-d rule=Luck
+```
+
+> After that, the response will be shown as:
+
+```ruby
+{
+    "message":"ok"
+}
+```
+
+Update a specific subscription
+
+### HTTP Request
+
+`PUT /api/v1/subscription/:id`
+
+### Query Parameters
+
+Parameter | Optionality | Data Type | Description
+--------- | ----------- | --------- | -----------
+id (path) | required    | integer   | subscription id
+token     | required    | string    | access token
+name      | optional    | string    | subscription name
+rule      | optional    | string    | subscription rule, regular expression
+
+### Error Code
+
+Error Code | Message | Meaning
+---------- | ------- | -------
+404        | Subscription not found! | 无此 id 对应的 subscription 资源

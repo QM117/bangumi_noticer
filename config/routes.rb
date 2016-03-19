@@ -57,7 +57,7 @@ Rails.application.routes.draw do
     namespace :v1, as: "v1" do
       get '/noticer' => 'noticer#index'
       resources :users, only: [:show, :create]
-      resources :subscriptions, only: [:show, :create]
+      resources :subscriptions, only: [:show, :create, :update]
 
       match '/users/subscribe', to: 'users#subscribe', via: 'put'
       match '/users/unsubscribe', to: 'users#unsubscribe', via: 'put'
