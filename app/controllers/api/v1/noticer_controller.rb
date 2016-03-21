@@ -5,10 +5,6 @@ class Api::V1::NoticerController < Api::V1::BaseApiController
   before_action :restrict_access
 
   def index
-    if params[:name].nil? || params[:email].nil?
-      render status: 400, json: {error: "Bad request! The parameter 'name' or 'email' is missing."} and return
-    end
-
     if !params[:from_date].blank? || !params[:to_date].blank?
       begin
         from_date = params[:from_date].blank? ? Time.at(0) : Time.parse(params[:from_date])
