@@ -37,9 +37,10 @@ class GetBangumis
     end
 
     Bangumi.transaction do
+      all_subscriptions = Subscription.all
       new_bangumis.each do |new_bangumi|
         if new_bangumi.save
-          Subscription.all.each do |subscription|
+          all_subscriptions.each do |subscription|
             subscription.bangumis << new_bangumi if subscription.match? new_bangumi
           end
         else
