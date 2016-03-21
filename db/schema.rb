@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160312014723) do
+ActiveRecord::Schema.define(version: 20160321023233) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "access_token"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20160312014723) do
     t.string   "size"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "fansub_id"
   end
 
   add_index "bangumis", ["classfication", "title"], name: "index_bangumis_on_classfication_and_title", unique: true
@@ -49,8 +50,10 @@ ActiveRecord::Schema.define(version: 20160312014723) do
     t.string   "rule"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "fansub_id"
   end
 
+  add_index "subscriptions", ["fansub_id", "name"], name: "index_subscriptions_on_fansub_id_and_name"
   add_index "subscriptions", ["name"], name: "index_subscriptions_on_name", unique: true
 
   create_table "subscriptions_users", force: :cascade do |t|
