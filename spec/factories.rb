@@ -7,6 +7,7 @@ FactoryGirl.define do
   factory :subscription do
     sequence(:name) {|n| "subscription_#{n}"}
     sequence(:rule) {|n| "regexp_#{n}"}
+    sequence(:fansub_id) {|n| n}
   end
 
   factory :user do
