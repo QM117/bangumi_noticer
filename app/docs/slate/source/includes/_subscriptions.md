@@ -6,7 +6,8 @@
 curl -X POST "http://localhost:3000/api/v1/subscriptions/" \
 -d token=8e7c69261918bf7d088b7023b59b57aa \
 -d name='One Punch Man' \
--d rule='punch'
+-d rule='punch' \
+-d fansub_id=233
 ```
 
 > Response of the command above like this:
@@ -18,7 +19,8 @@ HTTP Status Code: 201
     {
         "id":1,
         "name":"One Punch Man",
-        "rule":"punch"
+        "rule":"punch",
+        "fansub_id":233
     }
 }
 ```
@@ -37,6 +39,7 @@ Parameter | Optionality | Data Type | Description
 token     | required    | string    | access token
 name      | required    | string    | subscription name
 rule      | required    | string    | 用于匹配番组 (bangumi) 标题 (title) 的正则表达式。当然也可以直接当作搜索关键字来使用。
+fansub_id | optional    | integer   | 用于匹配番组 (bangumi) 的字幕组 (fansub_id)，不提供即不做事先检查，表示无所谓字幕组或者无字幕组 (raw) 的资源。
 
 ### Errors
 
@@ -63,6 +66,7 @@ token=d76ea6b03366edd884e6bca89f3689f2"
         "id":1,
         "name":"Luck and Logic",
         "rule":"Logic"
+        "fansub_id":666
     }
 }
 ```
@@ -118,6 +122,7 @@ id (path) | required    | integer   | subscription id
 token     | required    | string    | access token
 name      | optional    | string    | subscription name
 rule      | optional    | string    | subscription rule, regular expression
+fansub_id | optional    | integer   | fansub id
 
 ### Error Code
 

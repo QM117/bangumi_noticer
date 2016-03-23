@@ -26,7 +26,13 @@ class GetBangumis
         exist_bangumis += 1
       else
         exist_bangumis = 0
-        new_bangumi = Bangumi.new(upload_at: bangumi[0], classfication: bangumi[1], fansub: bangumi[3], title: bangumi[4], magnet_link: bangumi[5], size: bangumi[6])
+        new_bangumi = Bangumi.new(upload_at: bangumi[0],
+                                  classfication: bangumi[1],
+                                  fansub_id: bangumi[2],
+                                  fansub: bangumi[3],
+                                  title: bangumi[4],
+                                  magnet_link: bangumi[5],
+                                  size: bangumi[6])
 
         new_bangumis << new_bangumi
       end

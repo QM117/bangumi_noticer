@@ -7,4 +7,5 @@ describe Subscription do
 
   it {should respond_to(:name)}
   it {should respond_to(:rule)}
+  it {should respond_to(:fansub_id)}
 end

@@ -7,7 +7,8 @@ class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 		render status: 400, json: {error: "Bad request! parameter 'name' or 'rule' is missing"} and return if params[:name].nil? || params[:rule].nil?
 		subscription = Subscription.new(
 			name: params[:name],
-			rule: params[:rule]
+			rule: params[:rule],
+			fansub_id: params[:fansub_id]
 		)
 		if subscription.save
 			render status: 201, json: subscription and return
@@ -30,7 +31,7 @@ class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 		if subscription.nil?
 			render status: 404, json: {error: "Subscription not found!"} and return
 		else
-			subscription.update(params.permit(:name, :rule))
+			subscription.update(params.permit(:name, :rule, :fansub_id))
 			render status: 200, json: {message: 'ok'}
 		end
 	end

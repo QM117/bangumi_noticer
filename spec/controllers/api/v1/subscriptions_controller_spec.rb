@@ -13,7 +13,7 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
     end
 
     it "should create a subscription and return data with valid parameters" do
-      post :create, {token: @user_token, name: "subscription name", rule: "subscription_rule"}
+      post :create, {token: @user_token, name: "subscription name", rule: "subscription_rule", fansub_id: 233}
       expect(response.status).to be 201
       data = JSON.parse(response.body)
       subscription = Subscription.find_by_id(data["subscription"]["id"])
@@ -21,6 +21,7 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
       expect(subscription).not_to be_nil
       expect(subscription.name).to eq("subscription name")
       expect(subscription.rule).to eq("subscription_rule")
+      expect(subscription.fansub_id).to eq(233)
     end
 
     it "should return 400 without valid parameters" do
@@ -46,6 +47,7 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
       expect(data["subscription"]["id"]).to eq @subscription.id
       expect(data["subscription"]["name"]).to eq @subscription.name
       expect(data["subscription"]["rule"]).to eq @subscription.rule
+      expect(data["subscription"]["fansub_id"]).to eq @subscription.fansub_id
     end
 
     it "should not get anything without id" do
@@ -71,13 +73,14 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
     end
 
     it "should return 200 with valid parameters" do
-      put :update, {token: @user_token, id: @subscription.id, name: "subscription_new_name", rule: "subscription_new_rule"}
+      put :update, {token: @user_token, id: @subscription.id, name: "subscription_new_name", rule: "subscription_new_rule", fansub_id: 666}
       expect(response.status).to be 200
       data = JSON.parse(response.body)
       expect(data["message"]).to eq "ok"
       @subscription.reload
       expect(@subscription.name).to eq "subscription_new_name"
       expect(@subscription.rule).to eq "subscription_new_rule"
+      expect(@subscription.fansub_id).to eq 666
     end
 
     it "should return 404 with invalid subscription id" do
