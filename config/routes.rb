@@ -55,7 +55,7 @@ Rails.application.routes.draw do
   #   end
   namespace :api, defaults: {format: 'json'}, as: "api" do
     namespace :v1, as: "v1" do
-      get '/noticer' => 'noticer#index'
+      get '/bangumis/unread' => 'bangumis#unread'
       resources :users, only: [:show, :create]
       resources :subscriptions, only: [:show, :create, :update]
 

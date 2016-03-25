@@ -196,6 +196,90 @@ access token 最长 30 天过期。
 </tr>
 </tbody></table>
 
+          <h1 id="bangumis">Bangumis</h1>
+
+<h2 id="unread">unread</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/subscriptions/ </span><span class="se">\</span><span class="s2">
+token=22a7f88de19ef382043628e44a45c3d3"</span>
+</code></pre>
+
+<blockquote>
+<p>The response will show you some mystrious code!</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"bangumis"</span><span class="p">:</span>
+    <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span><span class="mi">1260</span><span class="p">,</span>
+            <span class="s2">"title"</span><span class="ss">:"灰と幻想のグリムガル Hai to Gensou no Grimgar - 02.5 (OVA) (BD 1280x720 x264 AAC).mp4"</span><span class="p">,</span>
+            <span class="s2">"upload_at"</span><span class="ss">:"2016-03-24T04:23:00.000Z"</span><span class="p">,</span>
+            <span class="s2">"fansub"</span><span class="ss">:null</span><span class="p">,</span>
+            <span class="s2">"size"</span><span class="ss">:"225.4MB"</span><span class="p">,</span>
+            <span class="s2">"magnet_link"</span><span class="ss">:"magnet:?xt=urn:btih:L2KOOMRXZC66BOT3J4B65V2AKSA3ONFX%2Fannounce"</span><span class="p">,</span>
+            <span class="s2">"viewed"</span><span class="ss">:false</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>核心功能，获取当前用户最近订阅的所有番组 (bangumis), 按照上传时间倒叙排列。<br>
+默认情况下，给出的是最近一周内订阅的所有番组，数量限制为 20 条。时间区间和数量可以通过参数指定。<br>
+另外给出参数 viewed 表示这一话当前用户是否看过。
+每个用户会记录最后一次调用这个 API 的时间 (last_viewed_at),
+viewed 就是通过比较 user.last_viewed_at 和 番组 (bangumi) 的创建时间来判断已读未读。  </p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>user access token</td>
+</tr>
+<tr>
+<td>from_date</td>
+<td>optional</td>
+<td>datetime</td>
+<td>指定时间区间。不提供表示 7 天前。</td>
+</tr>
+<tr>
+<td>to_date</td>
+<td>optional</td>
+<td>datetime</td>
+<td>指定时间区间。不提供表示当前时间。</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>optional</td>
+<td>integer</td>
+<td>Limit of amount. Default value is 20.</td>
+</tr>
+</tbody></table>
+
+<h3 id="error-code">Error Code</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad request! The parameter &lsquo;from_date&rsquo; or &#39;to_date&rsquo; is invalid.</td>
+<td>解析日期时出现错误</td>
+</tr>
+</tbody></table>
+
           <h1 id="users">Users</h1>
 
 <h2 id="create">create</h2>
