@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true
   validates :name, presence: true
-  validates :password, length: {minimum: 5}, confirmation: true, allow_blank: false
+  validates :password, length: {minimum: 8}, confirmation: true, allow_blank: false, :if => :password_digest_changed?
 
   has_secure_password
 	has_and_belongs_to_many :subscriptions
