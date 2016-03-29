@@ -68,6 +68,18 @@ RSpec.describe Api::V1::BangumisController, type: :controller do
       expect(bangumis[4]["viewed"]).to eq false
     end
 
+    it "should return 5 bangumis with limit 0 or invalid limit" do
+      get :unread, {token: @user_token, limit: 0}
+      expect(response.status).to be 200
+      bangumis = JSON.parse(response.body)["bangumis"]
+      expect(bangumis.length).to be 5
+      expect(bangumis[0]["id"]).to eq @bangumi_5.id
+      expect(bangumis[1]["id"]).to eq @bangumi_4.id
+      expect(bangumis[2]["id"]).to eq @bangumi_3.id
+      expect(bangumis[3]["id"]).to eq @bangumi_2.id
+      expect(bangumis[4]["id"]).to eq @bangumi_1.id
+    end
+
     it "should return bangumi 3, 4, 5 with limit 3" do
       get :unread, {token: @user_token, limit: 3}
       expect(response.status).to be 200

@@ -14,11 +14,15 @@ class Api::V1::BangumisController < Api::V1::BaseApiController
       to_date = DateTime.now
     end
 
-    limit = params[:limit] || 20
+    limit = params[:limit].to_i || 20
     # filtering by created date and subscription
     bangumis = Bangumi.where(created_at: from_date..to_date).joins(:subscriptions)
               .where(subscriptions: {id: @current_user.subscriptions.map{|subscription| subscription.id}})
-              .limit(limit.to_i).order(upload_at: :desc, id: :desc).uniq
+              .order(upload_at: :desc, id: :desc).uniq
+
+    if limit > 0
+      bangumis = bangumis.limit(limit)
+    end
 
     render json: bangumis, last_viewed_at: @current_user.last_viewed_at
 

@@ -39,7 +39,7 @@ Parameter | Optionality | Data Type | Description
 token     | required    | string    | user access token
 from_date | optional    | datetime  | 指定时间区间。不提供表示 7 天前。
 to_date   | optional    | datetime  | 指定时间区间。不提供表示当前时间。
-limit     | optional    | integer   | Limit of amount. Default value is 20.
+limit     | optional    | integer   | 数量限制，不提供使用默认值 20，非法数据或者 0 表示不作限制
 
 ### Error Code
 
