@@ -663,6 +663,73 @@ token=6bb96bc489b9b11cdca1a3edba1f1944"</span>
 </tr>
 </tbody></table>
 
+<h2 id="index">index</h2>
+<pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/subscriptions?</span><span class="se">\</span><span class="s2">
+token=a416ac1fec032adf1a9b4723f62ad383"</span>
+</code></pre>
+
+<blockquote>
+<p>The response is &hellip;</p>
+</blockquote>
+<pre class="highlight ruby"><code><span class="p">{</span>
+    <span class="s2">"subscriptions"</span><span class="p">:</span>
+    <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"name"</span><span class="ss">:"One Punch Man"</span><span class="p">,</span>
+            <span class="s2">"rule"</span><span class="ss">:"Punch"</span><span class="p">,</span>
+            <span class="s2">"fansub_id"</span><span class="p">:</span><span class="mi">233</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>获取当前用户关联的所有 Subscriptions.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET /api/v1/subscriptions</code></p>
+
+<h3 id="query-parameters">Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optionality</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>required</td>
+<td>string</td>
+<td>access token</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>optional</td>
+<td>integer</td>
+<td>limit of amount</td>
+</tr>
+</tbody></table>
+
+<h3 id="error-code">Error Code</h3>
+
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Message</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>None</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody></table>
+
 <h2 id="show">show</h2>
 <pre class="highlight shell"><code>curl <span class="s2">"http://localhost:3000/api/v1/subscriptions/1?</span><span class="se">\</span><span class="s2">
 token=d76ea6b03366edd884e6bca89f3689f2"</span>

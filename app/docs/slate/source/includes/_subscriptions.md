@@ -50,6 +50,49 @@ Error Code | Message | Meaning
 
 
 
+## index
+
+```bash
+curl "http://localhost:3000/api/v1/subscriptions?\
+token=a416ac1fec032adf1a9b4723f62ad383"
+```
+
+> The response is ...
+
+```ruby
+{
+    "subscriptions":
+    [
+        {
+            "id":1,
+            "name":"One Punch Man",
+            "rule":"Punch",
+            "fansub_id":233
+        }
+    ]
+}
+```
+
+获取当前用户关联的所有 Subscriptions.
+
+### HTTP Request
+
+`GET /api/v1/subscriptions`
+
+### Query Parameters
+
+Parameter | Optionality | Data Type | Description
+--------- | ----------- | --------- | ------------
+token     | required    | string    | access token
+limit     | optional    | integer   | limit of amount
+
+### Error Code
+
+Error Code | Message | Meaning
+---------- | ------- | -------
+None       | -       | -
+
+
 ## show
 
 ```bash

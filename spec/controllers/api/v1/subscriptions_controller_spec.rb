@@ -30,6 +30,48 @@ RSpec.describe Api::V1::SubscriptionsController, type: :controller do
     end
   end
 
+  describe "index function" do
+    before do
+      @subscription = FactoryGirl.create(:subscription)
+      @subscription_2 = FactoryGirl.create(:subscription)
+      @subscription_3 = FactoryGirl.create(:subscription)
+
+      @user.subscriptions << @subscription
+      @user.subscriptions << @subscription_2
+    end
+
+    it "should return all subscriptions of the current user" do
+      get :index, {token: @user_token}
+      expect(response.status).to be 200
+      data = JSON.parse(response.body)
+      expect(data["subscriptions"].length).to be 2
+      expect(data["subscriptions"][0]["id"]).to eq @subscription_2.id
+      expect(data["subscriptions"][1]["id"]).to eq @subscription.id
+    end
+
+    it "should return all subscription with limit" do
+      get :index, {token: @user_token, limit: 1}
+      expect(response.status).to be 200
+      data = JSON.parse(response.body)
+      expect(data["subscriptions"].length).to be 1
+      expect(data["subscriptions"][0]["id"]).to eq @subscription_2.id
+    end
+
+    it "should return all subscriptions with limit 0" do
+      get :index, {token: @user_token, limit: 0}
+      expect(response.status).to be 200
+      data = JSON.parse(response.body)
+      expect(data["subscriptions"].length).to be 2
+      expect(data["subscriptions"][0]["id"]).to eq @subscription_2.id
+      expect(data["subscriptions"][1]["id"]).to eq @subscription.id
+    end
+
+    it "should return 401 without user's token" do
+      get :index, {limit: 0}
+      expect(response.status).to be 401
+    end
+  end
+
   describe "show function" do
     before do
       @subscription = FactoryGirl.create(:subscription)

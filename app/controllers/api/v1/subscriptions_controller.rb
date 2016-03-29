@@ -17,6 +17,14 @@ class Api::V1::SubscriptionsController < Api::V1::BaseApiController
 		end
 	end
 
+	def index
+		subscriptions = @current_user.subscriptions.order(created_at: :desc, id: :desc)
+		if params[:limit].to_i > 0
+			subscriptions = subscriptions.limit(params[:limit].to_i)
+		end
+		render status: 200, json: subscriptions and return
+	end
+
 	def show
 		subscription = Subscription.find_by_id(params[:id])
 		if subscription.nil?
