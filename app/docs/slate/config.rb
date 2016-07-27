@@ -10,10 +10,11 @@ set :markdown,
     no_intra_emphasis: true
 
 # Assets
-set :css_dir, 'stylesheets'
-set :js_dir, 'javascripts'
-set :images_dir, 'images'
-set :fonts_dir, 'fonts'
+set :css_dir, 'docs/stylesheets'
+set :js_dir, 'docs/javascripts'
+set :images_dir, 'docs/images'
+set :fonts_dir, 'docs/fonts'
+set :build_dir, '../../../public/docs/'
 
 # Activate the syntax highlighter
 activate :syntax
@@ -38,5 +39,3 @@ configure :build do
   # activate :asset_hash
   # activate :gzip
 end
-
-set :build_dir, '../../../public/docs/'
