@@ -41,6 +41,15 @@ gem 'active_model_serializers'
 # scheduling pieces of jobs
 gem 'rufus-scheduler'
 
+# puma app server
+gem 'puma'
+
+# for deployment
+gem 'mina'
+
+# mina tasks for handle with puma
+gem 'mina-puma', :require => false
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
